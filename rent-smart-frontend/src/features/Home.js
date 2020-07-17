@@ -9,6 +9,7 @@ const Home = () => {
     const handleOnSubmit = event => {
         event.preventDefault();
         console.log("Submitted")
+        setSearchText('')
     }
 
     return (
