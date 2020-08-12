@@ -8,10 +8,11 @@ class Api::V1::UsersController < ApplicationController
     def create
         @user = User.create(user_params)
         if @user.valid?
-        @token = encode_token(user_id: @user.id, exp: Time.now.to_i + 3600 )
-        render json: { user: UserSerializer.new(@user), jwt: @token }, status: :created
+            exp_time = Time.now.to_i + 3600 
+            @token = encode_token(user_id: @user.id, exp: exp_time )
+            render json: { user: UserSerializer.new(@user), jwt: @token, exp: exp_time }, status: :created
         else
-        render json: { error: 'failed to create user' }, status: :not_acceptable
+            render json: { error: 'failed to create user' }, status: :not_acceptable
         end
     end
     
