@@ -4,7 +4,7 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import { Redirect } from 'react-router';
 import { useSelector } from 'react-redux';
-import { selectToken } from './authSlice';
+import { selectToken, signUp } from './authSlice';
 
 const Signup = () => {
 
@@ -24,7 +24,7 @@ const Signup = () => {
     const handleSubmit = e => {
         e.preventDefault();
         setInputValues({ ...inputValues, redirectOnLogin: true });
-        console.log(inputValues)
+        signUp(inputValues)
     }
 
     return (

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup'
-import ToggleButton from 'react-bootstrap/ToggleButton'
+import Nav from 'react-bootstrap/Nav'
 import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
@@ -8,8 +7,18 @@ import Button from 'react-bootstrap/Button'
 const Home = () => {
 
     const [searchText, setSearchText] = useState('')
+    const [value, setValue] = useState("landlord");
+
+    const handleChange = (val) => { 
+        setValue(val.currentTarget.dataset.rbEventKey);
+    }
+
+    const placeHolder = () => {
+        return value === "landlord" ? "Search for a landlord" : "Search by address"
+    } 
 
     const onChange = e => setSearchText(e.target.value)
+
     
     const handleOnSubmit = event => {
         event.preventDefault();
@@ -24,11 +33,15 @@ const Home = () => {
             <Form onSubmit={e => handleOnSubmit(e)}>
                 <Form.Row>
                     <Col>
-                    <Form.Control placeholder="Search for a Landlord or an Address" value={searchText} onChange={onChange} />
-                    <ToggleButtonGroup type="checkbox" defaultValue={[1]} className="mb-2">
-                        <ToggleButton value={1}>Find a Landlord</ToggleButton>
-                        <ToggleButton value={2}>Search by Address</ToggleButton>
-                    </ToggleButtonGroup>
+                    <Form.Control placeholder={placeHolder()} value={searchText} onChange={onChange} />
+                    <Nav variant="pills" defaultActiveKey={value}>
+                        <Nav.Item>
+                            <Nav.Link eventKey="landlord" onClick={handleChange}>Find a Landlord</Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link eventKey="address" onClick={handleChange}>Search by Address</Nav.Link>
+                        </Nav.Item>
+                    </Nav>
                     </Col>
                     <Col xs="auto">
                     <Button type="submit" className="mb-2">

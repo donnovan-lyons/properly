@@ -6,12 +6,8 @@ export const authSlice = createSlice({
     userInfo: {}, token: null, expiresAt: null
   },
   reducers: {
-    update: (state, action) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
-      state = action.payload;
+    update(state, action) {
+      return action.payload.payload
     },
   },
 });
@@ -24,6 +20,7 @@ export const { update } = authSlice.actions;
 // code can then be executed and other actions can be dispatched
 
 export const logIn = credentials => dispatch => {
+  console.log("logging in")
   fetch('http://localhost:3000/api/v1/login', {
     method: 'POST',
     headers: {
@@ -33,7 +30,7 @@ export const logIn = credentials => dispatch => {
     body: JSON.stringify(credentials)
   })
   .then(response => response.json())
-  .then(state => dispatch(update({payload: state})));
+  .then(json => dispatch(update({payload: {userInfo: json.user.data, token: json.jwt, expiresAt: json.exp}})));
 };
 
 export const signUp = info => dispatch => {
@@ -46,7 +43,16 @@ export const signUp = info => dispatch => {
     body: JSON.stringify(info)
   })
   .then(response => response.json())
-  .then(state => dispatch(update({payload: state})));
+  .then(json => dispatch(update({userInfo: json.user.data, token: json.jwt, expiresAt: json.exp})));
+};
+
+export const isAuthenticated = state => {
+  const token = state.authorization.token;
+  const expiresAt  = state.authorization.expiresAt
+  if ( !token || !expiresAt) {
+    return false
+  }
+  return new Date().getTime() / 1000 < expiresAt
 };
 
 // The function below is called a selector and allows us to select a value from

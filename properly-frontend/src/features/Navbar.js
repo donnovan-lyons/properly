@@ -1,9 +1,10 @@
-import React/*, { useState }*/ from 'react';
+import React from 'react';
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import { useSelector } from 'react-redux';
 import { selectToken } from './authSlice';
+// import { Link } from "react-router-dom";
 
 const NavBar = () => {
 
@@ -12,7 +13,6 @@ const NavBar = () => {
     const authorizationOptions = function () {
         if (token) {
             return (
-            <>
             <NavDropdown title="Profile" id="basic-nav-dropdown">
                 <NavDropdown.Item href="/messages">Messages</NavDropdown.Item>
                 <NavDropdown.Item href="/reviews">Reviews</NavDropdown.Item>
@@ -20,7 +20,6 @@ const NavBar = () => {
                 <NavDropdown.Item href="/account">Account</NavDropdown.Item>
                 <NavDropdown.Item href="/logout">Log out</NavDropdown.Item>
             </NavDropdown>
-            </>
             )
         } else {
             return (
