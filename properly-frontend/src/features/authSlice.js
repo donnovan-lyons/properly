@@ -3,11 +3,11 @@ import { createSlice } from '@reduxjs/toolkit';
 export const authSlice = createSlice({
   name: 'authorization',
   initialState: {
-    userInfo: {}, token: null, expiresAt: null
+    userInfo: {}, expiresAt: null
   },
   reducers: {
     update(state, action) {
-      return action.payload.payload
+      return action.payload
     },
   },
 });
@@ -20,17 +20,17 @@ export const { update } = authSlice.actions;
 // code can then be executed and other actions can be dispatched
 
 export const logIn = credentials => dispatch => {
-  console.log("logging in")
   fetch('http://localhost:3000/api/v1/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     },
+    credentials: 'include',
     body: JSON.stringify(credentials)
   })
   .then(response => response.json())
-  .then(json => dispatch(update({payload: {userInfo: json.user.data, token: json.jwt, expiresAt: json.exp}})));
+  .then(json => dispatch(update({userInfo: json.user.data, expiresAt: json.exp})));
 };
 
 export const signUp = info => dispatch => {
@@ -40,16 +40,23 @@ export const signUp = info => dispatch => {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     },
+    credentials: 'include',
     body: JSON.stringify(info)
   })
   .then(response => response.json())
-  .then(json => dispatch(update({userInfo: json.user.data, token: json.jwt, expiresAt: json.exp})));
+  .then(json => dispatch(update({userInfo: json.user.data, expiresAt: json.exp})));
 };
 
+export const logout = () => {
+  fetch(`http://localhost:3000/api/v1/auth`, {
+    method: 'DELETE',
+    credentials: 'include'
+  }).then(res => res.json())
+}
+
 export const isAuthenticated = state => {
-  const token = state.authorization.token;
   const expiresAt  = state.authorization.expiresAt
-  if ( !token || !expiresAt) {
+  if (!expiresAt) {
     return false
   }
   return new Date().getTime() / 1000 < expiresAt
@@ -65,8 +72,6 @@ export const isAuthenticated = state => {
 //   expiresAt: state.authorization.expiresAt
 // });
 export const selectUserInfo = state => state.authorization.userInfo
-
-export const selectToken = state => state.authorization.token
 
 export const selectExpiresAt = state => state.authorization.expiresAt
 

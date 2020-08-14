@@ -3,15 +3,15 @@ import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import { useSelector } from 'react-redux';
-import { selectToken } from './authSlice';
+import { selectExpiresAt } from './authSlice';
 import { NavLink } from "react-router-dom";
 
 const NavBar = () => {
 
-    const token = useSelector(selectToken);
+    const expiresAt = useSelector(selectExpiresAt);
 
     const authorizationOptions = function () {
-        if (token) {
+        if (expiresAt) {
             return (
             <NavDropdown title="Profile" id="basic-nav-dropdown">
                 <NavDropdown.Item as={NavLink} to="/messages">Messages</NavDropdown.Item>

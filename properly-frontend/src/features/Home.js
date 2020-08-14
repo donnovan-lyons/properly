@@ -14,7 +14,7 @@ const Home = () => {
     }
 
     const placeHolder = () => {
-        return value === "landlord" ? "Search for a landlord" : "Search by address"
+        return value === "landlord" ? "Search by landlord name" : "Search by address"
     } 
 
     const onChange = e => setSearchText(e.target.value)

@@ -4,14 +4,14 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import { Redirect } from 'react-router';
 import { useSelector } from 'react-redux';
-import { selectToken, signUp } from './authSlice';
+import { selectExpiresAt, signUp } from './authSlice';
 
 const Signup = () => {
 
-    const token = useSelector(selectToken);
+    const expiresAt = useSelector(selectExpiresAt);
 
     const [inputValues, setInputValues] = useState({
-        firstName: '' , lastName: '', email: '', password: '', passwordConfirmation: '', redirectOnLogin: token ? true : false
+        firstName: '' , lastName: '', email: '', password: '', passwordConfirmation: '', redirectOnLogin: expiresAt ? true : false
     });
       
     const handleOnChange = event => {

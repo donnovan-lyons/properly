@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { Redirect } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectToken, logIn } from './authSlice';
+import { selectExpiresAt, logIn } from './authSlice';
 
 
 
@@ -11,10 +11,10 @@ const Signin = () => {
 
     const dispatch = useDispatch();
 
-    const token = useSelector(selectToken);
+    const expiresAt = useSelector(selectExpiresAt);
 
     const [inputValues, setInputValues] = useState({
-        userInfo: '', password: '', redirectOnLogin: token ? true : false
+        userInfo: '', password: '', redirectOnLogin: expiresAt ? true : false
     });
       
     const handleOnChange = event => {
@@ -22,17 +22,11 @@ const Signin = () => {
         setInputValues({ ...inputValues, [name]: value });
     };
 
-    const handleSubmit = async e => {
+    const handleSubmit = e => {
         e.preventDefault();
-        try {
-            const credentials = {user: {email: inputValues['userInfo'], 
-            password: inputValues['password']}}
-            await dispatch(logIn(credentials))
-            setInputValues({ ...inputValues, redirectOnLogin: true });
-            console.log("Completed")
-        } catch (error) {
-            console.log("Failed to load")
-        }
+        const credentials = {user: {email: inputValues['userInfo'], password: inputValues['password']}}
+        dispatch(logIn(credentials))
+        setInputValues({ ...inputValues, redirectOnLogin: true })
     }
 
     return (
