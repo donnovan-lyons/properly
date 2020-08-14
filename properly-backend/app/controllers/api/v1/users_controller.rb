@@ -9,8 +9,10 @@ class Api::V1::UsersController < ApplicationController
         @user = User.create(user_params)
         if @user.valid?
             exp_time = Time.now.to_i + 3600 
+            # encode token comes from ApplicationController
             @token = encode_token(user_id: @user.id, exp: exp_time )
-            render json: { user: UserSerializer.new(@user), jwt: @token, exp: exp_time }, status: :created
+            cookies.signed[:jwt] = {token:  token, httponly: true, expires: 1.hour.from_now}
+            render json: { user: UserSerializer.new(@user), exp: exp_time }, status: :created
         else
             render json: { error: 'failed to create user' }, status: :not_acceptable
         end

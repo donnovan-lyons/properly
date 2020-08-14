@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::API
+  include ::ActionController::Cookies
     before_action :authorized
 
     def encode_token(payload)
@@ -6,21 +7,13 @@ class ApplicationController < ActionController::API
       JWT.encode(payload, 'my_s3cr3t')
     end
   
-    def auth_header
-      # { Authorization: 'Bearer <token>' }
-      request.headers['Authorization']
-    end
-  
     def decoded_token
-      if auth_header
-        token = auth_header.split(' ')[1]
-        # header: { 'Authorization': 'Bearer <token>' }
-        begin
-          leeway = 59
-          JWT.decode(token, 'my_s3cr3t', true, { exp_leeway: leeway, algorithm: 'HS256' })
-        rescue JWT::DecodeError
-          nil
-        end
+      begin
+        token = cookies.signed[:jwt]
+        leeway = 59
+        JWT.decode(token, 'my_s3cr3t', true, { exp_leeway: leeway, algorithm: 'HS256' })
+      rescue JWT::DecodeError
+        nil
       end
     end
   
