@@ -10,10 +10,46 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_17_090619) do
+ActiveRecord::Schema.define(version: 2020_08_18_202515) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "addresses", force: :cascade do |t|
+    t.string "street"
+    t.string "city"
+    t.string "state"
+    t.string "zip"
+    t.string "country"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "addresses_landlords", id: false, force: :cascade do |t|
+    t.bigint "landlord_id", null: false
+    t.bigint "address_id", null: false
+    t.index ["address_id", "landlord_id"], name: "index_addresses_landlords_on_address_id_and_landlord_id"
+    t.index ["landlord_id", "address_id"], name: "index_addresses_landlords_on_landlord_id_and_address_id"
+  end
+
+  create_table "landlords", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "email"
+    t.integer "phone"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "landlord_id"
+    t.string "title"
+    t.string "review"
+    t.integer "rating"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "first_name"
