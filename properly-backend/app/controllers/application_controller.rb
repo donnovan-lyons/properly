@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::API
-  include ::ActionController::Cookies
+  include ActionController::Cookies
+  include ActionController::RequestForgeryProtection
     before_action :authorized
+    before_action :set_csrf_cookie
 
     def encode_token(payload)
       # should store secret in env variable
@@ -9,7 +11,7 @@ class ApplicationController < ActionController::API
   
     def decoded_token
       begin
-        token = cookies.signed[:jwt]
+        token = session[:jwt]
         leeway = 59
         JWT.decode(token, 'my_s3cr3t', true, { exp_leeway: leeway, algorithm: 'HS256' })
       rescue JWT::DecodeError
@@ -30,5 +32,11 @@ class ApplicationController < ActionController::API
   
     def authorized
       render json: { message: 'Please log in' }, status: :unauthorized unless logged_in?
+    end
+
+    private
+
+    def set_csrf_cookie
+      cookies["CSRF-TOKEN"] = form_authenticity_token
     end
 end

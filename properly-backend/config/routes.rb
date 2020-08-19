@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       resources :landlords, only: [:index]
       post '/login', to: 'auth#create'
       get '/profile', to: 'users#profile'
+      get '/login_status', to: 'auth#login_status'
     end
   end
 end

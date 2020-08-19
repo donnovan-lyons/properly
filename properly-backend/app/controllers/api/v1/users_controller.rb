@@ -11,7 +11,7 @@ class Api::V1::UsersController < ApplicationController
             exp_time = Time.now.to_i + 3600 
             # encode token comes from ApplicationController
             @token = encode_token(user_id: @user.id, exp: exp_time )
-            cookies.signed[:jwt] = {token:  token, httponly: true, expires: 1.hour.from_now}
+            session[:jwt] = token
             render json: { user: UserSerializer.new(@user), exp: exp_time }, status: :created
         else
             render json: { error: 'failed to create user' }, status: :not_acceptable

@@ -1,5 +1,5 @@
 class Api::V1::AuthController < ApplicationController
-  skip_before_action :authorized, only: [:create]
+  skip_before_action :authorized, only: [:create, :login_status]
 
   def create
     @user = User.find_by(email: user_login_params[:email])
@@ -7,15 +7,24 @@ class Api::V1::AuthController < ApplicationController
       exp_time = Time.now.to_i + 3600 
       # encode token comes from ApplicationController
       token = encode_token({ user_id: @user.id, exp: exp_time })
-      cookies.signed[:jwt] = {token:  token, httponly: true, expires: 1.hour.from_now}
-      render json: { user: UserSerializer.new(@user), exp: exp_time}, status: :accepted
+      session[:jwt] = token
+      # byebug
+      render json: { user: UserSerializer.new(@user)}, status: :accepted
     else
       render json: { message: 'Invalid email or password' }, status: :unauthorized
     end
   end
 
+  def login_status
+    if current_user
+      render json: { user: UserSerializer.new(current_user)}, status: :accepted
+    else
+      render json: { message: 'Please login to continue' }, status: :unauthorized
+    end
+  end
+
   def destroy
-    cookies.delete(:jwt)
+    session.clear
   end
 
   private
