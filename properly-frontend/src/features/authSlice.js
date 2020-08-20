@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export const authSlice = createSlice({
   name: 'authorization',
   initialState: {
-    userInfo: {}, expiresAt: null
+    userInfo: {}, isLoggedIn: false
   },
   reducers: {
     update(state, action) {
@@ -20,7 +20,7 @@ export const { update } = authSlice.actions;
 // code can then be executed and other actions can be dispatched
 
 export const logIn = credentials => dispatch => {
-  fetch('http://localhost:3000/api/v1/login', {
+  fetch('http://localhost:3001/api/v1/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -30,11 +30,11 @@ export const logIn = credentials => dispatch => {
     body: JSON.stringify(credentials)
   })
   .then(response => response.json())
-  .then(json => dispatch(update({userInfo: json.user.data, expiresAt: json.exp})));
+  .then(json => dispatch(update({userInfo: json.user.data, isLoggedIn: true})));
 };
 
 export const signUp = info => dispatch => {
-  fetch('http://localhost:3000/api/v1/users', {
+  fetch('http://localhost:3001/api/v1/users', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -44,23 +44,37 @@ export const signUp = info => dispatch => {
     body: JSON.stringify(info)
   })
   .then(response => response.json())
-  .then(json => dispatch(update({userInfo: json.user.data, expiresAt: json.exp})));
+  .then(json => dispatch(update({userInfo: json.user.data, isLoggedIn: true})));
 };
 
 export const logout = () => {
-  fetch(`http://localhost:3000/api/v1/auth`, {
+  fetch(`http://localhost:3001/api/v1/auth`, {
     method: 'DELETE',
     credentials: 'include'
   }).then(res => res.json())
 }
 
-export const isAuthenticated = state => {
-  const expiresAt  = state.authorization.expiresAt
-  if (!expiresAt) {
-    return false
-  }
-  return new Date().getTime() / 1000 < expiresAt
+// export const isAuthenticated = state => {
+//   const expiresAt  = state.authorization.expiresAt
+//   if (!expiresAt) {
+//     return false
+//   }
+//   return new Date().getTime() / 1000 < expiresAt
+// };
+
+export const loginStatus = () => dispatch => {
+  fetch(`http://localhost:3001/api/v1/login_status`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    credentials: 'include'
+  }).then(res => res.json())
+  .then(json => dispatch(update({userInfo: json.user.data, isLoggedIn: true})))
+  .catch(err => console.error(err));
 };
+
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
@@ -73,6 +87,6 @@ export const isAuthenticated = state => {
 // });
 export const selectUserInfo = state => state.authorization.userInfo
 
-export const selectExpiresAt = state => state.authorization.expiresAt
+export const selectIsLoggedIn = state => state.authorization.isLoggedIn
 
 export default authSlice.reducer;
