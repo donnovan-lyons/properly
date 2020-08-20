@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import { Redirect } from 'react-router';
+import { Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectExpiresAt, logIn } from './authSlice';
-
+import { selectIsLoggedIn, logIn } from './authSlice';
 
 
 const Signin = () => {
 
     const dispatch = useDispatch();
 
-    const expiresAt = useSelector(selectExpiresAt);
+    const isLoggedIn = useSelector(selectIsLoggedIn);
 
     const [inputValues, setInputValues] = useState({
-        userInfo: '', password: '', redirectOnLogin: expiresAt ? true : false
+        userInfo: '', password: '', redirectOnLogin: isLoggedIn ? true : false
     });
       
     const handleOnChange = event => {

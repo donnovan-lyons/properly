@@ -3,15 +3,17 @@ import Form from 'react-bootstrap/Form'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import { Redirect } from 'react-router';
-import { useSelector } from 'react-redux';
-import { selectExpiresAt, signUp } from './authSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectIsLoggedIn, signUp } from './authSlice';
 
 const Signup = () => {
 
-    const expiresAt = useSelector(selectExpiresAt);
+    const dispatch = useDispatch();
+
+    const isLoggedIn = useSelector(selectIsLoggedIn);
 
     const [inputValues, setInputValues] = useState({
-        firstName: '' , lastName: '', email: '', password: '', passwordConfirmation: '', redirectOnLogin: expiresAt ? true : false
+        firstName: '' , lastName: '', email: '', password: '', passwordConfirmation: '', redirectOnLogin: isLoggedIn ? true : false
     });
       
     const handleOnChange = event => {
@@ -24,7 +26,7 @@ const Signup = () => {
     const handleSubmit = e => {
         e.preventDefault();
         setInputValues({ ...inputValues, redirectOnLogin: true });
-        signUp(inputValues)
+        dispatch(signUp(inputValues)) // still needs to be edited
     }
 
     return (

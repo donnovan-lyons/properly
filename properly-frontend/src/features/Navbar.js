@@ -1,17 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import NavDropdown from 'react-bootstrap/NavDropdown'
-import { useSelector } from 'react-redux';
-import { selectExpiresAt } from './authSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectIsLoggedIn } from './authSlice';
 import { NavLink } from "react-router-dom";
+import { loginStatus } from './authSlice';
 
 const NavBar = () => {
+    
+    const dispatch = useDispatch();
 
-    const expiresAt = useSelector(selectExpiresAt);
+    useEffect(() => {
+        dispatch(loginStatus())
+    });
+
+    const isLoggedIn = useSelector(selectIsLoggedIn);
 
     const authorizationOptions = function () {
-        if (expiresAt) {
+        if (isLoggedIn) {
             return (
             <NavDropdown title="Profile" id="basic-nav-dropdown">
                 <NavDropdown.Item as={NavLink} to="/messages">Messages</NavDropdown.Item>
