@@ -6,7 +6,7 @@ class Api::V1::LandlordsController < ApplicationController
         options = {
             include: [:reviews]
         }
-        render json: { landlord: LandlordSerializer.new(landlords) }
+        render json: LandlordSerializer.new(landlords, options)
     end
 
 end
