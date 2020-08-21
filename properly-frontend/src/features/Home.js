@@ -6,8 +6,12 @@ import Button from 'react-bootstrap/Button'
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
 import useOnclickOutside from "react-cool-onclickoutside";
 import { Redirect } from 'react-router-dom'
+import { useDispatch } from 'react-redux';
+import { searchLandlord } from './landlordsSlice';
 
 const Home = () => {
+
+    const dispatch = useDispatch();
 
     const [option, setOption] = useState("landlord");
     const [redirectForSearch, setRedirectForSearch] = useState(false);
@@ -42,6 +46,7 @@ const Home = () => {
 
     const renderRedirect = () => {
         if (option === "landlord") {
+            dispatch(searchLandlord(value))
             return (<Redirect to={{
                 pathname: `/landlords`,
                 search: "?name=" + value,

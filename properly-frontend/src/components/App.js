@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Route,
@@ -10,8 +10,18 @@ import Signin from '../features/Signin';
 import Signup from '../features/Signup';
 import LandlordSearchDisplay from '../features/LandlordSearchDisplay';
 import MapSearchDisplay from '../features/MapSearchDisplay';
+import { useDispatch } from 'react-redux';
+import { loginStatus } from '../features/authSlice';
+import { getLandlords } from '../features/landlordsSlice';
 
 function App() {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loginStatus())
+    dispatch(getLandlords())
+  });
 
   return (
     <Router>

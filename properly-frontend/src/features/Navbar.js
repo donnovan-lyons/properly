@@ -1,20 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import NavDropdown from 'react-bootstrap/NavDropdown'
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector} from 'react-redux';
 import { selectIsLoggedIn } from './authSlice';
 import { NavLink } from "react-router-dom";
-import { loginStatus } from './authSlice';
 
 const NavBar = () => {
     
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(loginStatus())
-    });
-
     const isLoggedIn = useSelector(selectIsLoggedIn);
 
     const authorizationOptions = function () {
