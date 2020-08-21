@@ -4,13 +4,12 @@ import {
   Route,
   Switch
 } from 'react-router-dom';
-import './App.css';
-import Navbar from './features/Navbar';
-import Home from './features/Home';
-import Signin from './features/Signin';
-import Signup from './features/Signup';
-import LandlordSearchDisplay from './features/LandlordSearchDisplay';
-import MapSearchDisplay from './features/MapSearchDisplay';
+import Navbar from '../features/Navbar';
+import Home from '../features/Home';
+import Signin from '../features/Signin';
+import Signup from '../features/Signup';
+import LandlordSearchDisplay from '../features/LandlordSearchDisplay';
+import MapSearchDisplay from '../features/MapSearchDisplay';
 
 function App() {
 

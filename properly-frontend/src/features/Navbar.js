@@ -22,7 +22,7 @@ const NavBar = () => {
             return (
             <NavDropdown title="Profile" id="basic-nav-dropdown">
                 <NavDropdown.Item as={NavLink} to="/messages">Messages</NavDropdown.Item>
-                <NavDropdown.Item as={NavLink} to="/reviews">Reviews</NavDropdown.Item>
+                <NavDropdown.Item as={NavLink} to="/reviews">My Reviews</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item as={NavLink} to="/account">Account</NavDropdown.Item>
                 <NavDropdown.Item as={NavLink} to="/logout">Log out</NavDropdown.Item>
