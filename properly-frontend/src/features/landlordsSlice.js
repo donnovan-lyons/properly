@@ -11,7 +11,7 @@ export const landlordsSlice = createSlice({
     },
     searchLandlord: (state, action) => {
       state.landlordSearchResults = state.landlords.filter(landlord => {
-        return action.payload.toLowerCase().includes(landlord.attributes.first_name.toLowerCase()) || action.payload.toLowerCase().includes(landlord.attributes.last_name.toLowerCase())
+        return action.payload.toLowerCase().includes(landlord.attributes.firstName.toLowerCase()) || action.payload.toLowerCase().includes(landlord.attributes.lastName.toLowerCase())
       })
     },
     addReviews: (state, action) => {

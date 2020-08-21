@@ -6,7 +6,7 @@ const LandlordProfileMini = (props) => {
 
     return (
         <div onClick={handleClick}>
-            <h4>{props.attributes.first_name} {props.attributes.last_name}</h4>
+            <h4>{props.attributes.firstName} {props.attributes.lastName}</h4>
         </div>
     )
 }
