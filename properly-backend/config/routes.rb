@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       resources :users, only: [:create]
       resources :addresses, only: [:index]
       resources :landlords, only: [:index]
+      resources :reviews, only: [:index]
       post '/login', to: 'auth#create'
       get '/profile', to: 'users#profile'
       get '/login_status', to: 'auth#login_status'

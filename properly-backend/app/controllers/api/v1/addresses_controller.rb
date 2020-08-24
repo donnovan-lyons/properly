@@ -3,10 +3,8 @@ class Api::V1::AddressesController < ApplicationController
     
     def index
         address = Address.all
-        options = {
-            include: [:landlords]
-        }
-        render json: { address: AddressSerializer.new(address, options) }
+        
+        render json: AddressSerializer.new(address)
     end
 
 end

@@ -3,10 +3,8 @@ class Api::V1::LandlordsController < ApplicationController
     
     def index
         landlords = Landlord.all
-        options = {
-            include: [:reviews]
-        }
-        render json: LandlordSerializer.new(landlords, options)
+
+        render json: LandlordSerializer.new(landlords)
     end
 
 end
