@@ -6,10 +6,51 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-users = User.create([{ first_name: 'Donnovan', last_name: 'Lyons', email: 'donnovan.lyons@gmail.com', username: 'donnovan', password: 'password', password_confirmation: 'password', bio: 'Future entrepreneur' }, { first_name: 'Jack', last_name: 'Brown', email: 'jbrown@gmail.com', username: 'jacktheman', password: 'password', password_confirmation: 'password', bio: 'Action star' }])
+require 'faker'
 
-Address.create([{street: '145 Crary Ave', city: 'Binghamton', state: 'NY', zip: '13905', country: 'USA'}])
+Faker::Config.locale = 'en-US'
 
-Address.first.landlords.create([{ first_name: 'John', last_name: 'Ar-bab'}, { first_name: 'Pierre', last_name: 'Ar-bab'}])
+users = User.create(first_name: 'Donnovan', last_name: 'Lyons', email: 'donnovan.lyons@gmail.com', username: 'donnovan', password: 'password', password_confirmation: 'password', bio: 'Future entrepreneur', avatar: avatar = Faker::Avatar.image)
 
-User.first.reviews.create(title: "Worst Landlord Ever", review: "This guy didn't help with anything, and didn't return security deposit", rating: 2, landlord_id: 1)
+99.times do
+    first_name = Faker::Name.first_name
+    last_name = Faker::Name.last_name
+    email =  Faker::Internet.unique.free_email
+    username = Faker::Internet.unique.username
+    password = Faker::Internet.password
+    bio = Faker::TvShows::SiliconValley.quote
+    avatar = Faker::Avatar.image
+    User.create(first_name: first_name, last_name: last_name, email: email, username: username, password: password, password_confirmation: password, bio: bio, avatar: avatar)
+end
+
+50.times do
+    house_number = Faker::Address.building_number
+    street = Faker::Address.street_name
+    city = Faker::Address.city
+    state = Faker::Address.state
+    zip = Faker::Address.zip_code
+    Address.create(house_number: house_number, street: street, city: city, state: state, zip: zip, country: 'USA')
+end
+
+75.times do |count|
+    first_name = Faker::Name.first_name
+    last_name = Faker::Name.last_name
+    email =  Faker::Internet.unique.email
+    phone = Faker::PhoneNumber.unique.cell_phone.delete('^0-9').to_i
+    if count <= 49 
+        Address.find(count+1).landlords.create(first_name: first_name, last_name: last_name, email: email, phone: phone)
+    else
+        Address.find(rand(1..50)).landlords.create(first_name: first_name, last_name: last_name, email: email, phone: phone)
+    end
+end
+
+100.times do |count|
+    title = Faker::Hipster.sentence(word_count: 2, supplemental: false, random_words_to_add: 4)
+    review = Faker::Hipster.paragraph
+    rating = rand(1..6)
+    if count <= 74
+        User.find(count+1).reviews.create(title: title, review: review, rating: rating, landlord_id: count+1)
+    else
+        User.find(count).reviews.create(title: title, review: review, rating: rating, landlord_id: rand(1..75))
+    end
+end

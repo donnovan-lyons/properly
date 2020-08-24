@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 2020_08_18_202515) do
   enable_extension "plpgsql"
 
   create_table "addresses", force: :cascade do |t|
+    t.string "house_number"
     t.string "street"
     t.string "city"
     t.string "state"
@@ -36,7 +37,7 @@ ActiveRecord::Schema.define(version: 2020_08_18_202515) do
     t.string "first_name"
     t.string "last_name"
     t.string "email"
-    t.integer "phone"
+    t.string "phone"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
