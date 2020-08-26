@@ -3,6 +3,7 @@ class ApplicationController < ActionController::API
   include ActionController::RequestForgeryProtection
     before_action :authorized
     before_action :set_csrf_cookie
+    require 'json'
 
     def encode_token(payload)
       # should store secret in env variable

@@ -7,6 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 require 'faker'
+require 'geocoder'
 
 Faker::Config.locale = 'en-US'
 
@@ -54,3 +55,4 @@ end
         User.find(count).reviews.create(title: title, review: review, rating: rating, landlord_id: rand(1..75))
     end
 end
+
