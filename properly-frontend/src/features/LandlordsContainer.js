@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
-import { useSelector} from 'react-redux';
-import { selectDisplayedLandlord, selectLandlords, selectSelectedLandlord } from './landlordsSlice';
+import { useSelector, useDispatch} from 'react-redux';
+import { selectLandlord, selectLandlords} from './landlordsSlice';
 import LandlordProfileMini from './LandlordProfileMini';
 import { Redirect } from 'react-router-dom'
 
 const LandlordsContainer = () => {
 
+    const dispatch =  useDispatch();
+
     const [redirect, setRedirect] = useState(false)
 
-    const landlord = useSelector(selectSelectedLandlord);
-    
-
-    const handleClick = (id) => {
-        selectDisplayedLandlord(id)
+    const handleClick = (landlord) => {
+        dispatch(selectLandlord(landlord.id))
         setRedirect(true)
     }
 
@@ -22,8 +21,7 @@ const LandlordsContainer = () => {
     
     const renderRedirect = () => {
         return (<Redirect to={{
-            pathname: `/landlord`,
-            state: { landlord: landlord }
+            pathname: `/landlord`
         }}/>)
     }
     

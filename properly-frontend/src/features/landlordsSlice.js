@@ -10,7 +10,7 @@ export const landlordsSlice = createSlice({
       state.landlords = action.payload
     },
     selectLandlord: (state, action) => {
-      state.landlord = state.landlords.find(action.payload)
+      state.selectedLandlord = state.landlords.find(landlord => landlord.id === action.payload)
     }/*,
     addReviews: (state, action) => {
       state.reviews = action.payload
@@ -64,6 +64,7 @@ export const selectDisplayedLandlord = id => dispatch => {
 // });
 
 export const selectLandlords = state => state.landlords.landlords
+
 export const selectSelectedLandlord = state => state.landlords.selectedLandlord
 
 export default landlordsSlice.reducer;

@@ -1,13 +1,15 @@
 import React from 'react';
-import { useLocation } from "react-router-dom";
+import { useSelector} from 'react-redux';
+import { selectSelectedLandlord } from './landlordsSlice';
 
-const LandlordProfile = (props) => {
+const LandlordProfile = () => {
 
-    const location = useLocation();
+    const landlord = useSelector(selectSelectedLandlord);
 
     return (
         <div>
-            {console.log(location)}
+            <h4>{landlord.first_name}  {landlord.last_name}</h4>
+            The full page.
         </div>
     )
 

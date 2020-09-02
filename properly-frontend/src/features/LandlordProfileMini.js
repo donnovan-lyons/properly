@@ -3,7 +3,7 @@ import React from 'react';
 const LandlordProfileMini = (landlord) => {
 
     const selectLandlord = () => {
-        landlord.handleClick(landlord.id)
+        landlord.handleClick(landlord)
     }
 
     return (
