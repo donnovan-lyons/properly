@@ -6,9 +6,20 @@ import rootReducer from './reducers'
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { loadState, saveState } from './localStorage'
+
+const persistedState = loadState();
 
 const store = configureStore({
-  reducer: rootReducer
+  reducer: rootReducer,
+  preloadedState:  persistedState
+})
+
+store.subscribe(()  => {
+  saveState({
+    authorization: store.getState().authorization,
+    isLoggedIn: store.getState().isLoggedIn
+  });
 })
 
 ReactDOM.render(
