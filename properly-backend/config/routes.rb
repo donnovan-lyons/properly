@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       post '/login', to: 'auth#create'
       get '/profile', to: 'users#profile'
       get '/login_status', to: 'auth#login_status'
+      delete 'logout', to: 'auth#destroy'
     end
   end
 end

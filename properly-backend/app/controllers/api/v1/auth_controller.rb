@@ -9,7 +9,7 @@ class Api::V1::AuthController < ApplicationController
       token = encode_token({ user_id: @user.id, exp: exp_time })
       session[:jwt] = token
       # byebug
-      render json: { user: UserSerializer.new(@user)}, status: :accepted
+      render json: { user: UserSerializer.new(@user).to_serialized_json, exp_time: exp_time}, status: :accepted
     else
       render json: { message: 'Invalid email or password' }, status: :unauthorized
     end
@@ -17,7 +17,7 @@ class Api::V1::AuthController < ApplicationController
 
   def login_status
     if current_user
-      render json: { user: UserSerializer.new(current_user)}, status: :accepted
+      render json: { user: UserSerializer.new(current_user) }, status: :accepted
     else
       render json: { message: 'Please login to continue' }, status: :unauthorized
     end
