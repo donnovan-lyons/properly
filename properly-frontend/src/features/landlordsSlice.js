@@ -3,35 +3,33 @@ import { createSlice } from '@reduxjs/toolkit';
 export const landlordsSlice = createSlice({
   name: 'landlords',
   initialState: {
-    landlords: [], landlordSearchResults: [], reviews: [], landlordReviews: []
+    landlords: [], selectedLandlord: {}
   },
   reducers: {
     addLandlords: (state, action) => {
       state.landlords = action.payload
     },
-    searchLandlord: (state, action) => {
-      state.landlordSearchResults = state.landlords.filter(landlord => {
-        return action.payload.toLowerCase().includes(landlord.attributes.firstName.toLowerCase()) || action.payload.toLowerCase().includes(landlord.attributes.lastName.toLowerCase())
-      })
-    },
+    selectLandlord: (state, action) => {
+      state.landlord = state.landlords.find(action.payload)
+    }/*,
     addReviews: (state, action) => {
       state.reviews = action.payload
     },
     findReviews:  (state, action) => {
       state.landlordReviews = state.reviews.filter(review => review.id === action.payload.id)
-    },
+    }, */
   },
 });
 
-export const { addLandlords, searchLandlord, addReviews, findReviews } = landlordsSlice.actions;
+export const { addLandlords, selectLandlord/*, addReviews, findReviews*/ } = landlordsSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
 // will call the thunk with the `dispatch` function as the first argument. Async
 // code can then be executed and other actions can be dispatched
 
-export const getLandlords = () => dispatch => {
-  fetch('http://localhost:3001/api/v1/landlords', {
+export const searchLandlords = (query) => dispatch => {
+  fetch(`http://localhost:3001/api/v1/landlords/search/${query}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -40,7 +38,11 @@ export const getLandlords = () => dispatch => {
     credentials: 'include'
   })
   .then(response => response.json())
-  .then(landlords => dispatch(addLandlords(landlords.data)) && dispatch(addReviews(landlords.included)) );
+  .then(landlords => dispatch(addLandlords(landlords)) );
+};
+
+export const selectDisplayedLandlord = id => dispatch => {
+  dispatch(selectLandlord(id));
 };
  
 // export const isAuthenticated = state => {
@@ -61,8 +63,7 @@ export const getLandlords = () => dispatch => {
 //   expiresAt: state.authorization.expiresAt
 // });
 
-export const selectLandlordSearchResults = state => state.landlords.landlordSearchResults
-
-export const selectLandlordReviews = state => state.landlords.landlordReviews
+export const selectLandlords = state => state.landlords.landlords
+export const selectSelectedLandlord = state => state.landlords.selectedLandlord
 
 export default landlordsSlice.reducer;

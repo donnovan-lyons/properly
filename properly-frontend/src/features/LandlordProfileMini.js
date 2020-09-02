@@ -1,12 +1,15 @@
 import React from 'react';
 
-const LandlordProfileMini = (props) => {
+const LandlordProfileMini = (landlord) => {
 
-    const handleClick = () => console.log("Clicked.")
+    const selectLandlord = () => {
+        landlord.handleClick(landlord.id)
+    }
 
     return (
-        <div onClick={handleClick}>
-            <h4>{props.attributes.firstName} {props.attributes.lastName}</h4>
+        <div onClick={selectLandlord}>
+            <h4>{landlord.first_name} {landlord.last_name}</h4>
+            <h5>{landlord.reviews.length} reviews</h5>
         </div>
     )
 }

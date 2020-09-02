@@ -2,12 +2,13 @@ import React from 'react';
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import NavDropdown from 'react-bootstrap/NavDropdown'
-import { useSelector} from 'react-redux';
-import { selectIsLoggedIn } from './authSlice';
 import { NavLink } from "react-router-dom";
+import logo from "../properly-logo/logo.png"
+import { selectIsLoggedIn } from './authSlice';
+import { useSelector } from 'react-redux';
 
 const NavBar = () => {
-    
+
     const isLoggedIn = useSelector(selectIsLoggedIn);
 
     const authorizationOptions = function () {
@@ -37,7 +38,7 @@ const NavBar = () => {
                 <Navbar.Brand as={NavLink} to="/">
                     <img
                         alt=""
-                        src=""
+                        src={logo}
                         width="30"
                         height="30"
                         className="d-inline-block align-top"

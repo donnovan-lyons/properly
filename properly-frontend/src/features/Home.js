@@ -7,7 +7,7 @@ import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocom
 import useOnclickOutside from "react-cool-onclickoutside";
 import { Redirect } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
-import { searchLandlord } from './landlordsSlice';
+import { searchLandlords } from './landlordsSlice';
 
 const Home = () => {
 
@@ -40,13 +40,12 @@ const Home = () => {
     } 
 
     const handleInput = (e) => {
-        // Update the keyword of the input element
         setValue(e.target.value);
     };
 
     const renderRedirect = () => {
         if (option === "landlord") {
-            dispatch(searchLandlord(value))
+            dispatch(searchLandlords(value))
             return (<Redirect to={{
                 pathname: `/landlords`,
                 search: "?name=" + value,
@@ -110,7 +109,7 @@ const Home = () => {
 
     return (
         <>
-        {redirectForSearch ? renderRedirect() : null}
+        {redirectForSearch && renderRedirect()}
         <div ref={ref}>
             
             <h3>The only way to rent</h3>

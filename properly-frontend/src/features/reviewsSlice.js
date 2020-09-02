@@ -1,17 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const addressSlice = createSlice({
+export const reviewsSlice = createSlice({
   name: 'addresses',
   initialState: {
-    addresses: [], addressSearchResults: [], landlordAddresses: []
+    reviews: [], selectedReviews: []
   },
   reducers: {
-    findAddress(state, action) {
+    findReviews(state, action) {
     }
   },
 });
 
-export const { findAddress } = addressSlice.actions;
+export const { findAddress } = reviewsSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
@@ -36,4 +36,4 @@ export const { findAddress } = addressSlice.actions;
 //   expiresAt: state.authorization.expiresAt
 // });
 
-export default addressSlice.reducer;
+export default reviewsSlice.reducer;

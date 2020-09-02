@@ -3,17 +3,32 @@ import { createSlice } from '@reduxjs/toolkit';
 export const authSlice = createSlice({
   name: 'authorization',
   initialState: {
-    userInfo: {}, isLoggedIn: false
+    userInfo: {}, expiresAt: null, isLoggedIn: false
   },
   reducers: {
     update: (state, action) => {
-      state.userInfo = action.payload
+      console.log(action.payload)
+      state.userInfo = action.payload.user
+      state.expiresAt = action.payload.exp_time
       state.isLoggedIn = true
+    },
+    checkAuthentication: state => {
+      if (!state.expiresAt) {
+        state.isLoggedIn = false
+      } else {
+        const time = new Date().getTime()
+        if (time < state.expiresAt) {
+          state.isLoggedIn = true
+        } else {
+          state.isLoggedIn = false
+          logout()
+        }
+      }
     },
   },
 });
 
-export const { update } = authSlice.actions;
+export const { update, checkAuthentication } = authSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
@@ -31,7 +46,7 @@ export const logIn = credentials => dispatch => {
     body: JSON.stringify(credentials)
   })
   .then(response => response.json())
-  .then(json => dispatch(update({userInfo: json.user.data, isLoggedIn: true})));
+  .then(json => dispatch(update(json)) );
 };
 
 export const signUp = info => dispatch => {
@@ -45,23 +60,24 @@ export const signUp = info => dispatch => {
     body: JSON.stringify(info)
   })
   .then(response => response.json())
-  .then(json => dispatch(update({userInfo: json.user.data, isLoggedIn: true})));
+  .then(json => dispatch(update({userInfo: json.user, expiresAt: json.exp_time})));
 };
 
 export const logout = () => {
-  fetch(`http://localhost:3001/api/v1/auth`, {
+  localStorage.removeItem('userInfo')
+  localStorage.removeItem('expiresAt')
+  localStorage.removeItem('isLoggedIn')
+  fetch(`http://localhost:3001/api/v1/logout`, {
     method: 'DELETE',
     credentials: 'include'
-  }).then(res => res.json())
+  })
 }
 
-// export const isAuthenticated = state => {
-//   const expiresAt  = state.authorization.expiresAt
-//   if (!expiresAt) {
-//     return false
-//   }
-//   return new Date().getTime() / 1000 < expiresAt
-// };
+export const isAuthenticated = () => dispatch => {
+  dispatch(checkAuthentication());
+};
+
+
 
 export const loginStatus = () => dispatch => {
   fetch(`http://localhost:3001/api/v1/login_status`, {
@@ -72,7 +88,7 @@ export const loginStatus = () => dispatch => {
     },
     credentials: 'include'
   }).then(res => res.json())
-  .then(json => dispatch(update({userInfo: json.user.data, isLoggedIn: true})))
+  .then(json => dispatch(update({userInfo: json, isLoggedIn: true})))
   .catch(err => console.error(err));
 };
 

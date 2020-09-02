@@ -3,8 +3,7 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectIsLoggedIn, logIn } from './authSlice';
-
+import { logIn, selectIsLoggedIn } from './authSlice';
 
 const Signin = () => {
 
