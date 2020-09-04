@@ -1,0 +1,61 @@
+import React, {useState} from 'react'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import { selectUserInfo } from './authSlice';
+import { useSelector } from 'react-redux';
+
+const ReviewForm = (landlord) => {
+
+    const user = useSelector(selectUserInfo)
+
+    const [formValues, setFormValues] = useState({
+        rating: '' , title: '', review: '', landLordId: landlord.id, user: user
+    });
+
+    const handleSubmit = event => {
+        event.preventDefault()
+        console.log(formValues)
+        setFormValues({ ...formValues, title: '', rating: ''});
+    }
+
+    const handleChange = event => {
+        setFormValues({ ...formValues, [event.target.name]: event.target.value });
+    }
+    
+    return (
+        <div>
+            <Form onSubmit={handleSubmit}>
+                <Form.Group controlId="reviewFormRating">
+                    <Form.Label >
+                        Please rate:
+                    </Form.Label>
+                    <br />
+
+                    {[1,2,3,4,5].map( (value, idx) => (
+                        <Form.Check key={idx} inline type="radio" label={value} name='rating' id={`rating`} value={idx} onChange={handleChange} />
+                    ))}
+                </Form.Group>
+
+                <Form.Group as={Row} controlId="reviewFormTitle">
+                    <Form.Label column sm={2}>Title:</Form.Label>
+                    <Col sm={10}>
+                        <Form.Control type="text" name='title' value={formValues['title']} sm={10} onChange={handleChange} />
+                    </Col>
+                </Form.Group>
+
+                <Form.Group controlId="reviewFormContent">
+                <Form.Label>Review:</Form.Label>
+                    <Form.Control as="textarea" name='review' value={formValues['review']} onChange={handleChange} />
+                </Form.Group>
+
+                <Button variant="primary" type="submit">
+                    Submit Review
+                </Button>
+            </Form>
+        </div>
+    )
+}
+
+export default ReviewForm;

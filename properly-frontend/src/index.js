@@ -16,9 +16,10 @@ const store = configureStore({
 })
 
 store.subscribe(()  => {
+  console.log(store.getState())
   saveState({
     authorization: store.getState().authorization,
-    isLoggedIn: store.getState().isLoggedIn
+    landlords: { landlords: [], selectedLandlord: store.getState().landlords.selectedLandlord }
   });
 })
 
