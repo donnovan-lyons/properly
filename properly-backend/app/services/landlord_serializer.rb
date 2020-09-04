@@ -8,7 +8,7 @@ class LandlordSerializer
       @landlord.to_json(
           :include => {
               :addresses => {
-                  :only => [:house_number, :street, :city, :state, :country]
+                  :only => [:house_number, :street, :city, :state, :country, :zip]
               },
               :reviews => {
                   :only => [:title, :review, :rating]
