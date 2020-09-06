@@ -5,9 +5,16 @@ import NavDropdown from 'react-bootstrap/NavDropdown'
 import { NavLink } from "react-router-dom";
 import logo from "../properly-logo/logo.png"
 import { selectIsLoggedIn } from './authSlice';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from './authSlice';
 
 const NavBar = () => {
+
+    const dispatch = useDispatch()
+
+    const handleClick = () => {
+        dispatch(logout())
+    }
 
     const isLoggedIn = useSelector(selectIsLoggedIn);
 
@@ -19,7 +26,7 @@ const NavBar = () => {
                 <NavDropdown.Item as={NavLink} to="/reviews">My Reviews</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item as={NavLink} to="/account">Account</NavDropdown.Item>
-                <NavDropdown.Item as={NavLink} to="/logout">Log out</NavDropdown.Item>
+                <NavDropdown.Item to="/logout" onClick={handleClick}>Log out</NavDropdown.Item>
             </NavDropdown>
             )
         } else {

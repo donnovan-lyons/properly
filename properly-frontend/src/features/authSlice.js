@@ -7,7 +7,6 @@ export const authSlice = createSlice({
   },
   reducers: {
     update: (state, action) => {
-      console.log(action.payload)
       state.userInfo = action.payload.user
       state.expiresAt = action.payload.exp_time
       state.isLoggedIn = true
@@ -25,10 +24,13 @@ export const authSlice = createSlice({
         }
       }
     },
+    userLogout(state, action) {
+      return {userInfo: {}, expiresAt: null, isLoggedIn: false}
+    }
   },
 });
 
-export const { update, checkAuthentication } = authSlice.actions;
+export const { update, checkAuthentication, userLogout } = authSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
@@ -46,7 +48,13 @@ export const logIn = credentials => dispatch => {
     body: JSON.stringify(credentials)
   })
   .then(response => response.json())
-  .then(json => dispatch(update(json)) );
+  .then(json => {
+    if (json.message) {
+      alert(json.message)
+    } else {
+      dispatch(update(json))
+    }
+  });
 };
 
 export const signUp = info => dispatch => {
@@ -60,13 +68,20 @@ export const signUp = info => dispatch => {
     body: JSON.stringify(info)
   })
   .then(response => response.json())
-  .then(json => dispatch(update({userInfo: json.user, expiresAt: json.exp_time})));
+  .then(json => {
+    if (json.error) {
+      alert(json.error);
+    } else {
+      dispatch(update({userInfo: json.user, expiresAt: json.exp_time}))
+    }
+  });
 };
 
-export const logout = () => {
-  localStorage.removeItem('userInfo')
-  localStorage.removeItem('expiresAt')
-  localStorage.removeItem('isLoggedIn')
+export const logout = () => dispatch => {
+  localStorage.removeItem('state')
+
+  dispatch(userLogout())
+
   fetch(`http://localhost:3001/api/v1/logout`, {
     method: 'DELETE',
     credentials: 'include'

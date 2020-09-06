@@ -16,7 +16,6 @@ const store = configureStore({
 })
 
 store.subscribe(()  => {
-  console.log(store.getState())
   saveState({
     authorization: store.getState().authorization,
     landlords: { landlords: [], selectedLandlord: store.getState().landlords.selectedLandlord }

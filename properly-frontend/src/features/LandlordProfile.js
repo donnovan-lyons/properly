@@ -16,9 +16,9 @@ const LandlordProfile = () => {
 
     const renderAddresses = () => landlord.addresses.map((address, id) => <Address key={id} {...address} />)
 
-    const renderReviews = () => landlord.reviews.map((review, id) => <Review key={id} {...review} />)
+    const renderReviews = () => [...landlord.reviews].reverse().map((review, id) => <Review key={id} {...review} />)
     
-    const renderForm = () => <ReviewForm {...landlord} />
+    const renderForm = () => <ReviewForm {...landlord} handleSubmit={handleClick} />
 
     return (
         <div>

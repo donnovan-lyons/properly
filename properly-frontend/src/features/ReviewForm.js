@@ -5,19 +5,24 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import { selectUserInfo } from './authSlice';
 import { useSelector } from 'react-redux';
+import { addReview } from './landlordsSlice';
+import { useDispatch } from 'react-redux';
 
 const ReviewForm = (landlord) => {
 
-    const user = useSelector(selectUserInfo)
+    const dispatch = useDispatch();
+
+    const user = JSON.parse(useSelector(selectUserInfo));
 
     const [formValues, setFormValues] = useState({
-        rating: '' , title: '', review: '', landLordId: landlord.id, user: user
+        rating: '' , title: '', review: '', landLordId: landlord.id, userId: user.id
     });
 
     const handleSubmit = event => {
-        event.preventDefault()
-        console.log(formValues)
-        setFormValues({ ...formValues, title: '', rating: ''});
+        event.preventDefault();
+        dispatch(addReview(formValues))
+        landlord.handleSubmit()
+        setFormValues({ ...formValues, title: '', rating: '', content: ''});
     }
 
     const handleChange = event => {

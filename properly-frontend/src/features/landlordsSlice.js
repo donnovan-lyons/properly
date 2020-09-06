@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { logout } from './authSlice';
 
 export const landlordsSlice = createSlice({
   name: 'landlords',
@@ -35,14 +36,20 @@ export const searchLandlords = (query) => dispatch => {
     credentials: 'include'
   })
   .then(response => response.json())
-  .then(landlords => dispatch(addLandlords(landlords)) );
+  .then(landlords => {
+    if (landlords.message) {
+      alert(landlords.message) && logout()
+    } else {
+      dispatch(addLandlords(landlords))
+    }
+  } );
 };
 
 export const selectDisplayedLandlord = id => dispatch => {
   dispatch(selectLandlord(id));
 };
 
-export const addReview = (userId, landlordId, review) => dispatch => {
+export const addReview = (formValues) => dispatch => {
   fetch(`http://localhost:3001/api/v1/reviews`, {
     method: 'POST',
     headers: {
@@ -50,10 +57,16 @@ export const addReview = (userId, landlordId, review) => dispatch => {
       'Accept': 'application/json'
     },
     credentials: 'include',
-    body: JSON.stringify({user_id: userId, landlord_id: landlordId, review: review})
+    body: JSON.stringify({review: formValues})
   })
   .then(response => response.json())
-  .then(landlord => dispatch(updateSelectedLandlord(landlord)) );
+  .then(landlord => {
+    if (landlord.message) {
+      alert(landlord.message) && logout()
+    } else {
+      dispatch(updateSelectedLandlord(landlord))
+    }
+  } );
 };
  
 // export const isAuthenticated = state => {
