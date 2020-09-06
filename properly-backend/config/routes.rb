@@ -14,7 +14,7 @@ Rails.application.routes.draw do
         end
       end
       resources :users, only: [:create, :update]
-      resources :addresses, only: [:create]
+      resources :addresses, only: [:show, :create]
       resources :landlords, only: [:show, :create]
       resources :reviews, only: [:create]
       post '/login', to: 'auth#create'

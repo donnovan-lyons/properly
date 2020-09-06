@@ -17,7 +17,7 @@ class Api::V1::AuthController < ApplicationController
 
   def login_status
     if current_user
-      render json: { user: UserSerializer.new(current_user) }, status: :accepted
+      render json: { user: UserSerializer.new(current_user).to_serialized_json }, status: :accepted
     else
       render json: { message: 'Please login to continue' }, status: :unauthorized
     end

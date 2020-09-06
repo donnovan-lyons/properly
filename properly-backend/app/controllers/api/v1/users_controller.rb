@@ -12,7 +12,7 @@ class Api::V1::UsersController < ApplicationController
             # encode token comes from ApplicationController
             @token = encode_token(user_id: @user.id, exp: exp_time )
             session[:jwt] = token
-            render json: { user: UserSerializer.new(@user), exp: exp_time }, status: :created
+            render json: { user: UserSerializer.new(@user).to_serialized_json, exp: exp_time }, status: :created
         else
             render json: { error: 'failed to create user' }, status: :not_acceptable
         end
