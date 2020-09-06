@@ -11,17 +11,14 @@ export const landlordsSlice = createSlice({
     },
     selectLandlord: (state, action) => {
       state.selectedLandlord = state.landlords.find(landlord => landlord.id === action.payload)
-    }/*,
-    addReviews: (state, action) => {
-      state.reviews = action.payload
     },
-    findReviews:  (state, action) => {
-      state.landlordReviews = state.reviews.filter(review => review.id === action.payload.id)
-    }, */
+    updateSelectedLandlord: (state, action) => {
+      state.selectedLandlord = action.payload
+    }
   },
 });
 
-export const { addLandlords, selectLandlord/*, addReviews, findReviews*/ } = landlordsSlice.actions;
+export const { addLandlords, selectLandlord, updateSelectedLandlord } = landlordsSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
@@ -43,6 +40,20 @@ export const searchLandlords = (query) => dispatch => {
 
 export const selectDisplayedLandlord = id => dispatch => {
   dispatch(selectLandlord(id));
+};
+
+export const addReview = (userId, landlordId, review) => dispatch => {
+  fetch(`http://localhost:3001/api/v1/reviews`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    credentials: 'include',
+    body: JSON.stringify({user_id: userId, landlord_id: landlordId, review: review})
+  })
+  .then(response => response.json())
+  .then(landlord => dispatch(updateSelectedLandlord(landlord)) );
 };
  
 // export const isAuthenticated = state => {
