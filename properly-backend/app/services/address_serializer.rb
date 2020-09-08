@@ -10,8 +10,11 @@ class AddressSerializer
               :landlords => {
                   :only => [:id, :first_name, :last_name],
                   :include => {
-                      :reviews => {
-                      :only => [:title, :rating]
+                    :addresses => {
+                        :only => [:house_number, :street, :city, :state, :country, :zip]
+                    },
+                    :reviews => {
+                        :only => [:title, :rating, :review]
                     }
                   }
               }
