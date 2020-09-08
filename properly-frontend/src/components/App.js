@@ -5,7 +5,7 @@ import Home from '../features/Home';
 import Signin from '../features/Signin';
 import Signup from '../features/Signup';
 import LandlordSearchDisplay from '../features/LandlordSearchDisplay';
-import MapSearchDisplay from '../features/MapSearchDisplay';
+import AddressSearchDisplay from '../features/AddressSearchDisplay';
 import LandlordProfile from '../features/LandlordProfile';
 
 function App() {
@@ -21,7 +21,7 @@ function App() {
           <Route exact path="/signup" component={Signup}/>
           <Route exact path="/landlord" component={LandlordProfile}/>
           <Route path="/landlords" component={LandlordSearchDisplay}/>
-          <Route path="/locations" component={MapSearchDisplay}/>
+          <Route path="/locations" component={AddressSearchDisplay}/>
         </Switch>
       </div>
     </Router>

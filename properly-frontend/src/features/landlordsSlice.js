@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { logout } from './authSlice';
 
 export const landlordsSlice = createSlice({
   name: 'landlords',
@@ -11,7 +10,7 @@ export const landlordsSlice = createSlice({
       state.landlords = action.payload
     },
     selectLandlord: (state, action) => {
-      state.selectedLandlord = state.landlords.find(landlord => landlord.id === action.payload)
+      state.selectedLandlord = action.payload
     },
     updateSelectedLandlord: (state, action) => {
       state.selectedLandlord = action.payload
@@ -38,7 +37,7 @@ export const searchLandlords = (query) => dispatch => {
   .then(response => response.json())
   .then(landlords => {
     if (landlords.message) {
-      alert(landlords.message) && logout()
+      alert(landlords.message)
     } else {
       dispatch(addLandlords(landlords))
     }
@@ -46,7 +45,22 @@ export const searchLandlords = (query) => dispatch => {
 };
 
 export const selectDisplayedLandlord = id => dispatch => {
-  dispatch(selectLandlord(id));
+  fetch(`http://localhost:3001/api/v1/landlords/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    credentials: 'include'
+  })
+  .then(response => response.json())
+  .then(landlord => {
+    if (landlord.message) {
+      alert(landlord.message)
+    } else {
+      dispatch(selectLandlord(landlord))
+    }
+  } );
 };
 
 export const addReview = (formValues) => dispatch => {
@@ -62,9 +76,9 @@ export const addReview = (formValues) => dispatch => {
   .then(response => response.json())
   .then(landlord => {
     if (landlord.message) {
-      alert(landlord.message) && logout()
+      alert(landlord.message)
     } else {
-      dispatch(updateSelectedLandlord(landlord))
+      dispatch(selectLandlord(landlord))
     }
   } );
 };

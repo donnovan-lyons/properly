@@ -10,20 +10,15 @@ const LandlordSearchDisplay = () => {
     const location = useLocation();
 
     useEffect(() => {
-        // Update the document title using the browser API
         const name = new URLSearchParams(location.search).get('name')
         dispatch(searchLandlords(name))
     });
-
-    
-
-    
 
     return (
         <div>
             <h1>Search Results</h1>
             <p>{new URLSearchParams(location.search).get('name')}</p>
-            <LandlordsContainer />
+            <LandlordsContainer type={"landlord"} />
         </div>
     )
 }

@@ -11,6 +11,7 @@ const Home = () => {
 
     const [option, setOption] = useState("landlord");
     const [redirectForSearch, setRedirectForSearch] = useState(false);
+    const [location, setLocation] = useState({});
 
     const {
         ready,
@@ -50,7 +51,7 @@ const Home = () => {
             to={{
               pathname: "/locations",
               search: "?address=" + value,
-              state: { address: value }
+              state: { address: value, location: location }
             }}
           />)
     }}
@@ -79,6 +80,7 @@ const Home = () => {
         getGeocode({ address: description })
         .then((results) => getLatLng(results[0]))
         .then(({ lat, lng }) => {
+            setLocation({ lat, lng })
             console.log("📍 Coordinates: ", { lat, lng });
         })
         .catch((error) => {
